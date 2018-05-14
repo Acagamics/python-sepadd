@@ -66,12 +66,9 @@ class SepaDD(object):
         if not isinstance(payment['amount'], int):
             validation += "AMOUNT_NOT_INTEGER "
 
-        if not isinstance(payment['mandate_date'], datetime.date):
-            validation += "MANDATE_DATE_INVALID_OR_NOT_DATETIME_INSTANCE"
+
         payment['mandate_date'] = str(payment['mandate_date'])
 
-        if not isinstance(payment['collection_date'], datetime.date):
-            validation += "COLLECTION_DATE_INVALID_OR_NOT_DATETIME_INSTANCE"
         payment['collection_date'] = str(payment['collection_date'])
 
         if validation == "":
@@ -94,7 +91,6 @@ class SepaDD(object):
             PmtInf_nodes = self._create_PmtInf_node()
             PmtInf_nodes['PmtInfIdNode'].text = make_id(self._config['name'])
             PmtInf_nodes['PmtMtdNode'].text = "DD"
-            PmtInf_nodes['BtchBookgNode'].text = "false"
             PmtInf_nodes['NbOfTxsNode'].text = "1"
             PmtInf_nodes['CtrlSumNode'].text = int_to_decimal_str(
                                                payment['amount'])
@@ -486,8 +482,6 @@ class SepaDD(object):
 
             PmtInf_nodes['PmtInfNode'].append(PmtInf_nodes['ChrgBrNode'])
 
-            if self.schema == 'pain.008.001.02':
-                PmtInf_nodes['CdtrSchmeIdNode'].append(PmtInf_nodes['Nm_CdtrSchmeId_Node'])
             PmtInf_nodes['OthrNode'].append(PmtInf_nodes['Id_Othr_Node'])
             PmtInf_nodes['SchmeNmNode'].append(PmtInf_nodes['PrtryNode'])
             PmtInf_nodes['OthrNode'].append(PmtInf_nodes['SchmeNmNode'])
